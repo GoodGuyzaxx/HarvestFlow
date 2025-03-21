@@ -61,7 +61,8 @@
                             android:id="@+id/tv_weather_description"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Partly Cloudy"
+                            android:text="-"
+                            android:fontFamily="@font/poppins_medium"
                             android:textSize="16sp"
                             android:textColor="#424242"
                             android:layout_marginTop="24dp"/>
@@ -88,7 +89,7 @@
                                     android:id="@+id/tv_wind_speed"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="3.5 km/h"
+                                    android:text="- km/h"
                                     android:textSize="14sp"
                                     android:layout_marginStart="4dp"/>
                             </LinearLayout>
@@ -120,7 +121,7 @@
                             android:id="@+id/tv_current_temp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="29°C"
+                            android:text="-°C"
                             android:textSize="36sp"
                             android:textStyle="bold"
                             android:textColor="#212121"
@@ -130,7 +131,7 @@
                             android:id="@+id/tv_min_max_temp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="24°C / 32°C"
+                            android:text="-°C / -°C"
                             android:textSize="14sp"
                             android:textColor="#757575"/>
                     </LinearLayout>
@@ -342,6 +343,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_humd"
                 android:layout_width="match_parent"
+                android:layout_marginBottom="50dp"
                 android:layout_height="200dp"
                 android:layout_marginTop="20dp"
                 app:cardCornerRadius="10dp"
@@ -350,6 +352,7 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/card_lux">
 
                 <LinearLayout
@@ -440,22 +443,23 @@
             </androidx.cardview.widget.CardView>
 
             <!-- Pump Button -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_pump"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="50dp"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:padding="12dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card_humd" />
+<!--            <androidx.appcompat.widget.AppCompatButton-->
+<!--                android:id="@+id/btn_pump"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginBottom="50dp"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="#FFFFFF"-->
+<!--                android:textStyle="bold"-->
+<!--                android:padding="12dp"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/card_humd" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
