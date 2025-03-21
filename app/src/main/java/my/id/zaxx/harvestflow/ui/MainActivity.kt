@@ -5,12 +5,16 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 import my.id.zaxx.harvestflow.R
 import my.id.zaxx.harvestflow.databinding.ActivityMainBinding
 import my.id.zaxx.harvestflow.ui.detection.DetectionActivity
 import my.id.zaxx.harvestflow.ui.home.HomeFragment
 import my.id.zaxx.harvestflow.ui.settings.SettingsFragment
+import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
