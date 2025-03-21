@@ -1,9 +1,12 @@
 import org.jetbrains.kotlin.backend.wasm.ir2wasm.bind
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -18,6 +21,17 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val keyStoreFile = project.rootProject.file("local.properties")
+        val properties = Properties()
+        properties.load(keyStoreFile.inputStream())
+
+        val apiKey = properties.getProperty("API_KEY") ?: ""
+        buildConfigField(
+            type = "String",
+            name = "API_KEY",
+            value = apiKey
+        )
     }
 
     buildTypes {
@@ -39,7 +53,11 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
+}
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
@@ -55,4 +73,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+//    implementation ("com.squareup.retrofit2:converter-gson:2.12.1")
+//    implementation ("com.google.code.gson:gson:2.12.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
 }
