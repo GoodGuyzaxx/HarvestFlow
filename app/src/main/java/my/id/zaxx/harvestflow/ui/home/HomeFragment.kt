@@ -1,6 +1,7 @@
 package my.id.zaxx.harvestflow.ui.home
 
 import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.viewModels
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -19,6 +21,8 @@ import com.google.firebase.database.database
 import com.google.firebase.database.getValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
+import my.id.zaxx.harvestflow.BuildConfig
 import my.id.zaxx.harvestflow.R
 import my.id.zaxx.harvestflow.data.model.LightSensor
 import my.id.zaxx.harvestflow.data.model.RainSensor
@@ -26,7 +30,16 @@ import my.id.zaxx.harvestflow.data.model.RelayPower
 import my.id.zaxx.harvestflow.data.model.SoilSensor
 import my.id.zaxx.harvestflow.data.model.TempSensor
 import my.id.zaxx.harvestflow.databinding.FragmentHomeBinding
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
+import javax.inject.Inject
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -35,6 +48,7 @@ class HomeFragment : Fragment() {
     private lateinit var power : RelayPower
     private var readPowerValue : Boolean = false
     private var valueEventListener: ValueEventListener? = null
+    private val viewModel : HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,8 +56,10 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container ,false)
+//        buttonTheme()
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,27 +67,35 @@ class HomeFragment : Fragment() {
         getSoilSensor()
         getRainSensor()
         getLuxSensor()
-        getRelay()
-        buttnTheme()
-        binding.btnPump.setOnClickListener {
-            buttnTheme()
-            if (readPowerValue == true){
-                sendRelay(false)
-            } else {
-                sendRelay(true)
-            }
+//        getRelay()
+//        binding.btnPump.setOnClickListener {
+//            buttonTheme()
+//            if (readPowerValue == true){
+//                sendRelay(false)
+//            } else {
+//                sendRelay(true)
+//            }
+//        }
+
+
+        val lat = "-2.53371"
+        val lon = "140.71813"
+
+        binding.tvDateTime.text = formatDate()
+
+        viewModel.getWeather(lat,lon)
+        viewModel.weatherResponse.observe(viewLifecycleOwner){
+            val valueCurrentTemp = convertKelvinToCelcius(it.main.temp.toString().toDouble())
+
+
+            binding.tvCurrentTemp.text = resources.getString(R.string.room_temp, valueCurrentTemp)
+            binding.tvLocation.text = it.name.toString()
+            binding.tvWindSpeed.text = resources.getString(R.string.wind_speed, it.wind.speed)
+            binding.tvWeatherDescription.text = it.weather[0].description.toString()
+
         }
     }
 
-    private fun buttnTheme(){
-        if (readPowerValue == true){
-            binding.btnPump.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background)
-            binding.btnPump.text = "Matikan Pompa"
-        }else{
-            binding.btnPump.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_on)
-            binding.btnPump.text = "Nyalakan Pompa"
-        }
-    }
 
     private fun getTempSensor() {
         firebase = FirebaseDatabase.getInstance()
@@ -82,7 +106,6 @@ class HomeFragment : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (_binding == null) return
                 val tempSensor = snapshot.getValue(TempSensor::class.java)
-                Log.d("TAG", "Data updated: ${tempSensor}")
                 tempSensor?.let {
                     binding.tvTemperature.text = resources.getString(R.string.room_temp,it.celcius )
                     binding.tvEnvHumidity.text = resources.getString(R.string.env_humi, it.humd)
@@ -161,42 +184,63 @@ class HomeFragment : Fragment() {
         database.addValueEventListener(valueEventListener!!)
     }
 
-    private fun getRelay(){
-        firebase = FirebaseDatabase.getInstance()
-        database = firebase.getReference("relay_module")
-
-        valueEventListener = object  : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (_binding == null ) return
-                val relayPowerValue = snapshot.getValue(RelayPower::class.java)
-                relayPowerValue?.let {
-                    readPowerValue = it.power
-                    Log.d("TAG", "onDataChangeRelay: ${it.power}")
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(activity, "Failed to retrieve data: ${error.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
-        database.addValueEventListener(valueEventListener!!)
+    private fun convertKelvinToCelcius(value : Double): Any {
+        val kMinus = -273.15
+        val cValue = value + kMinus
+        return  cValue.roundToInt()
     }
 
-    private fun sendRelay(value : Boolean){
-        firebase =FirebaseDatabase.getInstance()
-        database = firebase.getReference("relay_module")
-        database.child("power")
-        power = RelayPower()
-        power.power = value
+    private fun formatDate(): String {
+        // Create formatter with the desired pattern
+        val dateFormat = SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault())
 
-        database.setValue(power)
-            .addOnSuccessListener {
-                Toast.makeText(activity, "berhasil", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener{
-                Toast.makeText(activity, "gagal ${it.message}", Toast.LENGTH_SHORT).show()
-            }
+        // You can use current date or a specific date
+        val currentDate = Date() // For current date
+
+        // For a specific date (e.g., March 22, 2025)
+        // val specificDate = Calendar.getInstance()
+        // specificDate.set(2025, Calendar.MARCH, 22)
+        // return dateFormat.format(specificDate.time)
+
+        return dateFormat.format(currentDate)
     }
+
+//    private fun getRelay(){
+//        firebase = FirebaseDatabase.getInstance()
+//        database = firebase.getReference("relay_module")
+//
+//        valueEventListener = object  : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                if (_binding == null ) return
+//                val relayPowerValue = snapshot.getValue(RelayPower::class.java)
+//                relayPowerValue?.let {
+//                    readPowerValue = it.power
+//                    Log.d("TAG", "onDataChangeRelay: ${it.power}")
+//                }
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                Toast.makeText(activity, "Failed to retrieve data: ${error.message}", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//        database.addValueEventListener(valueEventListener!!)
+//    }
+
+//    private fun sendRelay(value : Boolean){
+//        firebase =FirebaseDatabase.getInstance()
+//        database = firebase.getReference("relay_module")
+//        database.child("power")
+//        power = RelayPower()
+//        power.power = value
+//
+//        database.setValue(power)
+//            .addOnSuccessListener {
+//                Toast.makeText(activity, "berhasil", Toast.LENGTH_SHORT).show()
+//            }
+//            .addOnFailureListener{
+//                Toast.makeText(activity, "gagal ${it.message}", Toast.LENGTH_SHORT).show()
+//            }
+//    }
 
 
     override fun onDestroyView() {
