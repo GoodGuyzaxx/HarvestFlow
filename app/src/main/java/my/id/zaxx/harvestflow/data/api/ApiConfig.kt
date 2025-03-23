@@ -16,6 +16,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object ApiConfig {
 
+    val baseURL = "https://api.openweathermap.org/"
+
     @Singleton
     @Provides
     fun providerHttpLoggingInterceptor() = HttpLoggingInterceptor()
@@ -39,7 +41,7 @@ object ApiConfig {
     @Provides
     fun providerRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl("https://api.openweathermap.org/")
+        .baseUrl(baseURL)
         .client(okHttpClient)
         .build()
 
