@@ -4,11 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#F5F5F5"
     tools:context=".ui.home.HomeFragment">
-
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -46,7 +42,7 @@
                             android:text="Denpasar, Bali"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            android:textColor="#212121"/>
+                            />
 
                         <TextView
                             android:id="@+id/tv_date_time"
@@ -54,7 +50,7 @@
                             android:layout_height="wrap_content"
                             android:text="Saturday, 8 March 2025"
                             android:textSize="14sp"
-                            android:textColor="#757575"
+
                             android:layout_marginTop="4dp"/>
 
                         <TextView
@@ -64,7 +60,7 @@
                             android:text="-"
                             android:fontFamily="@font/poppins_medium"
                             android:textSize="16sp"
-                            android:textColor="#424242"
+
                             android:layout_marginTop="24dp"/>
 
                         <LinearLayout
@@ -175,7 +171,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Temperature"
-                            android:textColor="#757575"
                             android:textSize="16sp" />
 
                         <TextView
@@ -183,7 +178,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0°C"
-                            android:textColor="#212121"
                             android:textSize="24sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -211,7 +205,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Enviroment Humidity"
-                            android:textColor="#757575"
                             android:textSize="12sp" />
 
                         <TextView
@@ -219,7 +212,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0%"
-                            android:textColor="#212121"
                             android:textSize="24sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -257,7 +249,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Light Intensity"
-                        android:textColor="#757575"
                         android:textSize="16sp" />
 
                     <TextView
@@ -265,7 +256,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0 lux"
-                        android:textColor="#212121"
                         android:textSize="24sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -302,7 +292,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Rain Detection"
-                        android:textColor="#757575"
                         android:textSize="16sp"/>
 
                     <TextView
@@ -310,7 +299,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="-"
-                        android:textColor="#212121"
                         android:textSize="22sp"
                         android:textStyle="bold"/>
 
@@ -366,7 +354,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Soil Humidity"
-                        android:textColor="#212121"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -375,7 +362,7 @@
                         android:layout_height="48dp"
                         android:layout_marginTop="8dp"
                         android:src="@drawable/ic_soil_humidity"
-                        app:tint="#8D6E63" />
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -388,7 +375,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Dry"
-                            android:textColor="#757575"
                             android:textSize="14sp" />
 
                         <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -398,8 +384,6 @@
                             android:layout_weight="1"
                             android:layout_marginHorizontal="8dp"
                             app:trackThickness="8dp"
-                            app:trackColor="#E0E0E0"
-                            app:indicatorColor="#8D6E63"
                             app:trackCornerRadius="4dp"
                             android:progress="0"
                             android:max="100" />
@@ -408,37 +392,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Wet"
-                            android:textColor="#757575"
                             android:textSize="14sp" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_humidity"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+
                         android:text="0%"
-                        android:textColor="#212121"
                         android:textSize="28sp"
-                        android:textStyle="bold"
-                        android:layout_marginTop="8dp" />
-
-                    <TextView
-                        android:id="@+id/tv_humidity_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Optimal moisture level"
-                        android:textColor="#4CAF50"
-                        android:textSize="14sp"
-                        android:layout_marginTop="4dp" />
-
-                    <TextView
-                        android:id="@+id/tv_last_watered"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Last watered: Today 08:15"
-                        android:textColor="#757575"
-                        android:textSize="12sp"
-                        android:layout_marginTop="8dp" />
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
