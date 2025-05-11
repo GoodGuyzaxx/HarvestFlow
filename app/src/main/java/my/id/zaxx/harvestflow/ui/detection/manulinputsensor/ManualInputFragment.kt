@@ -1,60 +1,66 @@
 package my.id.zaxx.harvestflow.ui.detection.manulinputsensor
 
+
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import my.id.zaxx.harvestflow.R
+import my.id.zaxx.harvestflow.databinding.FragmentManualInputBinding
+import my.id.zaxx.harvestflow.utils.KualitasClassifier
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ManualInputFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ManualInputFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding : FragmentManualInputBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var prediksi : KualitasClassifier
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_manual_input, container, false)
+        _binding = FragmentManualInputBinding.inflate(layoutInflater,container, false)
+        return binding.root
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ManualInputFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ManualInputFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        prediksi = KualitasClassifier(requireContext())
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.btnPrediksi.setOnClickListener {
+            getPrediksi()
+        }
+    }
+
+
+    fun getPrediksi(){
+        try {
+            val suhu = binding.textEditSuhu.text.toString().toFloat()
+            val kelembabanUdara = binding.textEditKelembabanUdara.text.toString().toFloat()
+            val kelembabanTanah = binding.textEditKelembabanTanah.text.toString().toFloat()
+            val intensitasCahaya = binding.textEditCahaya.text.toString().toFloat()
+
+            val result = prediksi.predict(suhu,kelembabanUdara,kelembabanTanah,intensitasCahaya)
+
+            Log.d("TAG", "getPrediksi: ${result} ")
+        }catch (e: Exception){
+            Log.d("TAG", "getPrediksiError: $e")
+        }
+
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+        prediksi.close()
+    }
+
 }
