@@ -21,6 +21,8 @@
             android:hint="Temperature">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:inputType="numberDecimal"
+                android:id="@+id/text_edit_suhu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="true"
@@ -38,7 +40,9 @@
             android:hint="Humidity">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_edit_kelembaban_udara"
                 android:layout_width="match_parent"
+                android:inputType="numberDecimal"
                 android:layout_height="wrap_content"
                 android:hint="0%"/>
 
@@ -54,6 +58,8 @@
             android:hint="Soil Humidity">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_edit_kelembaban_tanah"
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="0%"/>
@@ -70,6 +76,8 @@
             android:hint="Light Intensity">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_edit_cahaya"
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="0 Lux"/>
@@ -77,6 +85,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/btn_prediksi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
