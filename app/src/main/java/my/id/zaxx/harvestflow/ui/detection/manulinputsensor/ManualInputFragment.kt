@@ -7,15 +7,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import my.id.zaxx.harvestflow.R
 import my.id.zaxx.harvestflow.databinding.FragmentManualInputBinding
 import my.id.zaxx.harvestflow.utils.KualitasClassifier
+import my.id.zaxx.harvestflow.utils.PrediksiKualitas
+import okhttp3.Dispatcher
+import org.tensorflow.lite.Interpreter
+import java.io.FileInputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+import java.nio.channels.FileChannel
 
 class ManualInputFragment : Fragment() {
     private var _binding : FragmentManualInputBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var prediksi : KualitasClassifier
+    private lateinit var prediksiKualitas : PrediksiKualitas
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,43 +36,58 @@ class ManualInputFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentManualInputBinding.inflate(layoutInflater,container, false)
         return binding.root
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prediksi = KualitasClassifier(requireContext())
+        prediksiKualitas = PrediksiKualitas(requireActivity())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnPrediksi.setOnClickListener {
-            getPrediksi()
+            runPrediciton()
         }
     }
 
 
-    fun getPrediksi(){
-        try {
-            val suhu = binding.textEditSuhu.text.toString().toFloat()
-            val kelembabanUdara = binding.textEditKelembabanUdara.text.toString().toFloat()
-            val kelembabanTanah = binding.textEditKelembabanTanah.text.toString().toFloat()
-            val intensitasCahaya = binding.textEditCahaya.text.toString().toFloat()
+    private fun runPrediciton() {
+        val suhu = binding.textEditSuhu.text.toString().toFloat()
+        val kelembabanUdara = binding.textEditKelembabanUdara.text.toString().toFloat()
+        val kelembabanTanah = binding.textEditKelembabanTanah.text.toString().toFloat()
+        val intensitasCahaya = binding.textEditCahaya.text.toString().toFloat()
+        val inputValue = floatArrayOf(
+            suhu,
+            kelembabanUdara,
+            kelembabanTanah,
+            intensitasCahaya
+        )
 
-            val result = prediksi.predict(suhu,kelembabanUdara,kelembabanTanah,intensitasCahaya)
 
-            Log.d("TAG", "getPrediksi: ${result} ")
-        }catch (e: Exception){
-            Log.d("TAG", "getPrediksiError: $e")
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val result = prediksiKualitas.predict(inputValue)
+                activity?.runOnUiThread {
+                    Toast.makeText(requireContext(), "Sucess $result", Toast.LENGTH_LONG).show()
+                    Log.d("TAG", "runPredicitonSucess: $result")
+                }
+            } catch (e: Exception) {
+                activity?.runOnUiThread {
+
+                    Toast.makeText(requireContext(), "Fail $e", Toast.LENGTH_LONG).show()
+                    Log.e("TAG", "ErrorrunPrediciton: ${e}", )
+                }
+            }
+
         }
-
     }
+
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-        prediksi.close()
+
     }
 
 }
