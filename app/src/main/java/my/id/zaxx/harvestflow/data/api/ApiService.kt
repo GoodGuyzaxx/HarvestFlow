@@ -3,7 +3,6 @@ package my.id.zaxx.harvestflow.data.api
 import my.id.zaxx.harvestflow.BuildConfig
 import my.id.zaxx.harvestflow.data.api.response.WeatherResponse
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 

@@ -17,15 +17,18 @@ class HomeViewModel  @Inject constructor (private val repository: HarvestFlowRep
     private val _weatherResponse = MutableLiveData<WeatherResponse>()
     val weatherResponse: LiveData<WeatherResponse> = _weatherResponse
 
+    private val _errorResponse = MutableLiveData<String>()
+    val errorResponse: LiveData<String> = _errorResponse
+
     fun getWeather(lat: String, lon:String){
         viewModelScope.launch {
             try {
                 val response = repository.getWeather(lat,lon)
                 _weatherResponse.postValue(response)
             }catch (e : HttpException){
-
+                _errorResponse.postValue(e.toString())
             }catch (e : Exception){
-
+                _errorResponse.postValue(e.toString())
             }
 
         }

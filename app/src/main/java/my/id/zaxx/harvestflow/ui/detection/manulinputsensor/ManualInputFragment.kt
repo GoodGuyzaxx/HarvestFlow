@@ -1,26 +1,20 @@
 package my.id.zaxx.harvestflow.ui.detection.manulinputsensor
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import my.id.zaxx.harvestflow.R
 import my.id.zaxx.harvestflow.databinding.FragmentManualInputBinding
-import my.id.zaxx.harvestflow.utils.KualitasClassifier
+import my.id.zaxx.harvestflow.ui.resultprediction.ResultActivity
 import my.id.zaxx.harvestflow.utils.PrediksiKualitas
-import okhttp3.Dispatcher
-import org.tensorflow.lite.Interpreter
-import java.io.FileInputStream
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
-import java.nio.channels.FileChannel
 
 class ManualInputFragment : Fragment() {
     private var _binding : FragmentManualInputBinding? = null
@@ -69,12 +63,13 @@ class ManualInputFragment : Fragment() {
             try {
                 val result = prediksiKualitas.predict(inputValue)
                 activity?.runOnUiThread {
-                    Toast.makeText(requireContext(), "Sucess $result", Toast.LENGTH_LONG).show()
-                    Log.d("TAG", "runPredicitonSucess: $result")
+//                    Toast.makeText(requireContext(), "Sucess $result", Toast.LENGTH_LONG).show()
+                    val i = Intent(requireActivity(), ResultActivity::class.java)
+                    i.putExtra("HASIL",result)
+                    startActivity(i)
                 }
             } catch (e: Exception) {
                 activity?.runOnUiThread {
-
                     Toast.makeText(requireContext(), "Fail $e", Toast.LENGTH_LONG).show()
                     Log.e("TAG", "ErrorrunPrediciton: ${e}", )
                 }
@@ -87,7 +82,6 @@ class ManualInputFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-
     }
 
 }

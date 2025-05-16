@@ -1,21 +1,20 @@
 package my.id.zaxx.harvestflow.ui.resultprediction
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import my.id.zaxx.harvestflow.R
+import my.id.zaxx.harvestflow.databinding.ActivityResultBinding
 
 class ResultActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityResultBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_result)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityResultBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val intentValue = intent.extras?.getString("HASIL",null)
+        binding.tvCondition.text = intentValue
     }
+
+
+
 }

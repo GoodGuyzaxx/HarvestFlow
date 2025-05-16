@@ -1,28 +1,19 @@
 package my.id.zaxx.harvestflow.ui.home
 
-import android.content.res.Resources
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.database
-import com.google.firebase.database.getValue
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import my.id.zaxx.harvestflow.BuildConfig
 import my.id.zaxx.harvestflow.R
 import my.id.zaxx.harvestflow.data.model.LightSensor
 import my.id.zaxx.harvestflow.data.model.RainSensor
@@ -31,13 +22,9 @@ import my.id.zaxx.harvestflow.data.model.SoilSensor
 import my.id.zaxx.harvestflow.data.model.TempSensor
 import my.id.zaxx.harvestflow.databinding.FragmentHomeBinding
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
-import javax.inject.Inject
 import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -82,6 +69,10 @@ class HomeFragment : Fragment() {
         val lon = "140.71813"
 
         binding.tvDateTime.text = formatDate()
+
+        viewModel.errorResponse.observe(viewLifecycleOwner){
+            Toast.makeText(requireContext(), it , Toast.LENGTH_SHORT).show()
+        }
 
         viewModel.getWeather(lat,lon)
         viewModel.weatherResponse.observe(viewLifecycleOwner){

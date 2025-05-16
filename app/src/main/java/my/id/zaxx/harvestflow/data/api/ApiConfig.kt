@@ -4,12 +4,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import my.id.zaxx.harvestflow.BuildConfig
+import my.id.zaxx.harvestflow.data.repository.HarvestFlowRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import my.id.zaxx.harvestflow.BuildConfig
-import my.id.zaxx.harvestflow.data.repository.HarvestFlowRepository
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 object ApiConfig {
 
     val baseURL = "https://api.openweathermap.org/"
+    val predictURL = "http://0.0.0.0:5000"
 
     @Singleton
     @Provides
@@ -45,15 +47,29 @@ object ApiConfig {
         .client(okHttpClient)
         .build()
 
+
     @Singleton
     @Provides
     fun providerApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
 
+
+    @Singleton
+    @Provides
+    @Named("retrofitPredict")
+    fun providerSecondRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(predictURL)
+        .client(okHttpClient)
+        .build()
+
+    @Singleton
+    @Provides
+    fun providerSecondApiService(@Named("retrofitPredict") retrofit: Retrofit): PredictApiService = retrofit.create(
+        PredictApiService::class.java)
+
     @Singleton
     @Provides
     fun providerRepository(apiService: ApiService) = HarvestFlowRepository(apiService)
-
-
 
 }
 

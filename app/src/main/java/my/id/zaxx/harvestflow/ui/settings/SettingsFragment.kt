@@ -3,13 +3,12 @@ package my.id.zaxx.harvestflow.ui.settings
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import com.google.android.material.switchmaterial.SwitchMaterial
 import my.id.zaxx.harvestflow.R
 import my.id.zaxx.harvestflow.ui.resultprediction.ResultActivity
@@ -37,12 +36,12 @@ class SettingsFragment : Fragment() {
         // Saving state of our app using SharedPreferences
         val sharedPreferences = activity?.getSharedPreferences("sharedPrefs", MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
-        val isDarkModeOn = sharedPreferences?.getBoolean("isDarkModeOn", true)
+        val isDarkModeOn = sharedPreferences?.getBoolean("isDarkModeOn", false)
 
         if (isDarkModeOn!!) {
-            switchTheme.isChecked = true
-        } else {
             switchTheme.isChecked = false
+        } else {
+            switchTheme.isChecked = true
         }
 
         switchTheme.setOnClickListener {
