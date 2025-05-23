@@ -18,29 +18,24 @@ import javax.inject.Singleton
 object ApiConfig {
 
     val baseURL = "https://api.openweathermap.org/"
-    val predictURL = "http://0.0.0.0:5000"
+    val predictURL = "http://209.38.82.183"
 
-    @Singleton
     @Provides
-    fun providerHttpLoggingInterceptor() = HttpLoggingInterceptor()
-        .apply {
-            if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            } else
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
-        }
-
-
     @Singleton
+    fun providerHttpLoggingInterceptor() = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+
+
     @Provides
+    @Singleton
     fun providesOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient
             .Builder()
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
-    @Singleton
     @Provides
+    @Singleton
+    @Named("Normal")
     fun providerRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(baseURL)
@@ -48,13 +43,14 @@ object ApiConfig {
         .build()
 
 
-    @Singleton
     @Provides
-    fun providerApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
+    @Singleton
+    fun providerApiService(@Named("Normal")retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
 
 
-    @Singleton
+
     @Provides
+    @Singleton
     @Named("retrofitPredict")
     fun providerSecondRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
@@ -62,14 +58,15 @@ object ApiConfig {
         .client(okHttpClient)
         .build()
 
-    @Singleton
     @Provides
+    @Singleton
     fun providerSecondApiService(@Named("retrofitPredict") retrofit: Retrofit): PredictApiService = retrofit.create(
         PredictApiService::class.java)
 
-    @Singleton
     @Provides
-    fun providerRepository(apiService: ApiService) = HarvestFlowRepository(apiService)
+    @Singleton
+    fun providerRepository(apiService: ApiService, predictApiService: PredictApiService) = HarvestFlowRepository(apiService, predictApiService)
+
 
 }
 

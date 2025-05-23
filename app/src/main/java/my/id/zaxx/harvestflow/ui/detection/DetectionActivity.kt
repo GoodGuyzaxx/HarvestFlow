@@ -3,11 +3,13 @@ package my.id.zaxx.harvestflow.ui.detection
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import my.id.zaxx.harvestflow.adapter.DetectionPagesAdapter
 import my.id.zaxx.harvestflow.databinding.ActivityDetectionBinding
 import my.id.zaxx.harvestflow.ui.detection.manulinputsensor.ManualInputFragment
 import my.id.zaxx.harvestflow.ui.detection.sensorinput.SensorInputFragment
 
+@AndroidEntryPoint
 class DetectionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetectionBinding
@@ -18,7 +20,6 @@ class DetectionActivity : AppCompatActivity() {
         binding = ActivityDetectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViewPager()
-
     }
 
     private fun setupViewPager(){

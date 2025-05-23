@@ -138,4 +138,5 @@
     <string name="soil_humi">%1$s%%</string>
     <string name="lux_sensor">%s lux</string>
     <string name="wind_speed">%s km/h</string>
+    <string name="confidence">%1$s%% confidence</string>
 </resources>
