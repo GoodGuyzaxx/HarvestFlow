@@ -10,6 +10,7 @@ import my.id.zaxx.harvestflow.databinding.ActivityMainBinding
 import my.id.zaxx.harvestflow.ui.detection.DetectionActivity
 import my.id.zaxx.harvestflow.ui.home.HomeFragment
 import my.id.zaxx.harvestflow.ui.settings.SettingsFragment
+import my.id.zaxx.harvestflow.utils.NotificationServices
 
 
 @AndroidEntryPoint
@@ -20,7 +21,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         loadFragment(HomeFragment())
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+        //Trigger Notification Services
+        Intent(this, NotificationServices::class.java).also{
+            it.action = NotificationServices.Actions.START.toString()
+            this.startService(it)
+        }
+
+
 
         binding.fab.setOnClickListener{
             val i = Intent(this@MainActivity, DetectionActivity::class.java)
@@ -43,11 +51,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
     }
+
 
     private fun loadFragment(fragment: Fragment){
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.framelayout,fragment)
         transaction.commit()
     }
+
+
+
 }
