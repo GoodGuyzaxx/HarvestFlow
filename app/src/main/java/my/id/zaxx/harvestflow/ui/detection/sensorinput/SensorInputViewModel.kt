@@ -10,8 +10,9 @@ import com.google.gson.JsonObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import my.id.zaxx.harvestflow.data.api.response.PredictionResponse
+import my.id.zaxx.harvestflow.data.api.response.Probabilities
 import my.id.zaxx.harvestflow.data.repository.HarvestFlowRepository
-import org.json.JSONObject
+import my.id.zaxx.harvestflow.ui.detection.manulinputsensor.ManualInputViewModel
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -21,22 +22,52 @@ class SensorInputViewModel @Inject constructor (private val repository: HarvestF
     private val _responsePrediction = MutableLiveData<PredictionResponse>()
     val responsePrediction: LiveData<PredictionResponse> = _responsePrediction
 
+    private val _errorResponse = MutableLiveData<Exception>()
+    val errorResponse: LiveData<Exception> = _errorResponse
 
-    fun getPrediction(predictJson: JsonObject){
+    fun getPrediciton(jsonObject: JsonObject) {
         viewModelScope.launch {
             try {
-                val response = repository.getPredication(predictJson)
+                val response = repository.getPredication(jsonObject)
                 _responsePrediction.postValue(response)
             }catch (e : HttpException) {
-                val jsonString = e.response()?.errorBody()?.string()
-                val errorBody = Gson().fromJson(jsonString, PredictionResponse::class.java)
-                val errorMessage = errorBody
-                _responsePrediction.postValue(errorBody)
-                Log.d("TAG", "getLogin: $errorMessage")
-            }catch (e : Exception){
-                Log.d("SensorInputViewModel", "getPrediction: $e")
+                try {
+                    val jsonString = e.response()?.errorBody()?.string()
+                    if (!jsonString.isNullOrEmpty()){
+                        val errorBody = Gson().fromJson(jsonString, PredictionResponse::class.java)
+                        val errorMessage = errorBody
+                        _responsePrediction.postValue(errorMessage)
+                        Log.e("TAG", "getPrediciton:$errorMessage ")
+                    } else {
+                        val defaultResponse = PredictionResponse(
+                            prediction = "",
+                            probabilities = Probabilities("",""),
+                            status = "error",
+                            message = "HTTP: ${e.code()} + ${e.response()} "
+                        )
+                        _responsePrediction.postValue(defaultResponse)
+                        Log.d(TAG, "getPrediciton: $defaultResponse")
+                    }
+                } catch (json : Exception) {
+                    val jsonDefaultResponse = PredictionResponse(
+                        prediction = "",
+                        probabilities = Probabilities("",""),
+                        status = "error",
+                        message = "Failed ${json.message} "
+                    )
+                    _responsePrediction.postValue(jsonDefaultResponse)
+                    Log.d(TAG, "getPrediciton: $jsonDefaultResponse")
+                }
+
+            } catch (e : Exception) {
+                Log.e(TAG, "getPrediciton:${e.message} ")
             }
+
         }
+    }
+
+    companion object {
+        private val TAG = SensorInputViewModel::class.simpleName
     }
 
 }
