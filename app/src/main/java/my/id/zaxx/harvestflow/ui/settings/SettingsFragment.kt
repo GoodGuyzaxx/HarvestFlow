@@ -1,5 +1,6 @@
 package my.id.zaxx.harvestflow.ui.settings
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
@@ -55,5 +56,16 @@ class SettingsFragment : Fragment() {
                 editor?.apply()
             }
         }
+
     }
+
+    fun clearInternalFiles(context: Context) {
+        try {
+            val filesDir = context.filesDir
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }
