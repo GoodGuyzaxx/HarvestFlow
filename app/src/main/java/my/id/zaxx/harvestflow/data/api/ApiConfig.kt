@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import my.id.zaxx.harvestflow.BuildConfig
 import my.id.zaxx.harvestflow.data.repository.HarvestFlowRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,7 +17,7 @@ import javax.inject.Singleton
 object ApiConfig {
 
     val baseURL = "https://api.openweathermap.org/"
-    val predictURL = "http://209.38.82.183"
+    val predictURL = "https://terrapin-relaxing-seemingly.ngrok-free.app/"
 
     @Provides
     @Singleton

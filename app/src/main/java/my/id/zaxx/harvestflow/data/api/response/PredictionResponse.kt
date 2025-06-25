@@ -8,8 +8,20 @@ data class PredictionResponse(
 	val prediction: String,
 
 	@field:SerializedName("probabilities")
-	val probabilities: List<Any>,
+	val probabilities: Probabilities,
 
 	@field:SerializedName("status")
-	val status: String
+	val status: String,
+
+	@field:SerializedName("message")
+	val message: String
+)
+
+data class Probabilities(
+
+	@field:SerializedName("buruk")
+	val buruk: String,
+
+	@field:SerializedName("baik")
+	val baik: String
 )
