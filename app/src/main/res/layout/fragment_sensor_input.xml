@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50dp"
                     android:layout_marginEnd="50dp"
-                    android:text="Aplikasi akan menggunkan data Sensor terbaru yang akan digunakan untuk prediksi"
+                    android:text="Aplikasi akan menggunkan data Sensor terbaru yang akan digunakan untuk prediksi"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
