@@ -139,4 +139,11 @@
     <string name="lux_sensor">%s lux</string>
     <string name="wind_speed">%s km/h</string>
     <string name="confidence">%1$s%% confidence</string>
+    <string name="warning_emoji">⚠️</string>
+    <string name="water_emoji">💦</string>
+    <string name="plant_emoji">🌱</string>
+    <string name="humi_emoji">💧</string>
+    <string name="temp_emoji">🌡️</string>
+    <string name="sun_emoji">☀️</string>
+    <string name="cold_emoji">❄️</string>
 </resources>
