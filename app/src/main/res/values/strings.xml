@@ -146,4 +146,6 @@
     <string name="temp_emoji">🌡️</string>
     <string name="sun_emoji">☀️</string>
     <string name="cold_emoji">❄️</string>
+    <string name="result_baik">Selamat! Semua parameter lingkungan yang dimonitor berada dalam rentang ideal. Ini adalah kondisi terbaik bagi tanaman cabai rawit untuk tumbuh subur.</string>
+    <string name="result_buruk">Peringatan! Kondisi lingkungan saat ini dapat menyebabkan stres pada tanaman. Jika dibiarkan, hal ini berisiko membuat pertumbuhan tanaman menjadi kerdil atau rentan terhadap penyakit.</string>
 </resources>
