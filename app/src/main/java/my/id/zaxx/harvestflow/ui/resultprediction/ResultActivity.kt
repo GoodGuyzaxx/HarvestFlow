@@ -36,6 +36,12 @@ class ResultActivity : AppCompatActivity() {
 
         binding.tvAccuracy.text = resources.getString(R.string.confidence,listValue.max().toInt().toString())
         setupBarChart(listValue)
+
+        if (intentValue == "baik") {
+            binding.tvAnalysis.text = resources.getString(R.string.result_baik)
+        } else {
+            binding.tvAnalysis.text = resources.getString(R.string.result_buruk)
+        }
     }
 
 
