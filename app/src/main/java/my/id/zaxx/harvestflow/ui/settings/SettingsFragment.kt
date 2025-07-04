@@ -8,15 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.android.material.switchmaterial.SwitchMaterial
+import my.id.zaxx.harvestflow.BuildConfig
 import my.id.zaxx.harvestflow.R
 import my.id.zaxx.harvestflow.ui.resultprediction.ResultActivity
 
 class SettingsFragment : Fragment() {
     private lateinit var btnExit : Button
     private lateinit var switchTheme : SwitchMaterial
+    private lateinit var tvVersion : TextView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,6 +36,7 @@ class SettingsFragment : Fragment() {
             startActivity(v)
         }
         switchTheme = view.findViewById(R.id.theme_switch)
+        tvVersion = view.findViewById<TextView>(R.id.tv_version_name)
 
         // Saving state of our app using SharedPreferences
         val sharedPreferences = activity?.getSharedPreferences("sharedPrefs", MODE_PRIVATE)
@@ -56,6 +60,10 @@ class SettingsFragment : Fragment() {
                 editor?.apply()
             }
         }
+
+        tvVersion.text = BuildConfig.VERSION_NAME.toString()
+
+
 
     }
 
