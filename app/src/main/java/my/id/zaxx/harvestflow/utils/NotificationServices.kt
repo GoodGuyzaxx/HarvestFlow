@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener
 import my.id.zaxx.harvestflow.R
 import my.id.zaxx.harvestflow.data.model.SoilSensor
 import my.id.zaxx.harvestflow.data.model.TempSensor
+import my.id.zaxx.harvestflow.ui.MainActivity
 import my.id.zaxx.harvestflow.ui.home.HomeFragment
 import my.id.zaxx.harvestflow.ui.home.HomeFragment.Companion.CHANNEL_ID
 
@@ -127,7 +128,7 @@ class NotificationServices: Service() {
 
     @SuppressLint("MissingPermission")
     fun sendNotification(textContent : String){
-        val intent = Intent(applicationContext, HomeFragment::class.java).apply {
+        val intent = Intent(applicationContext, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(applicationContext,0,intent, PendingIntent.FLAG_IMMUTABLE)
