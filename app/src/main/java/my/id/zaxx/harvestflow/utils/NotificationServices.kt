@@ -18,11 +18,13 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import my.id.zaxx.harvestflow.R
+import my.id.zaxx.harvestflow.data.api.ApiConfig
 import my.id.zaxx.harvestflow.data.model.SoilSensor
 import my.id.zaxx.harvestflow.data.model.TempSensor
 import my.id.zaxx.harvestflow.ui.MainActivity
 import my.id.zaxx.harvestflow.ui.home.HomeFragment
 import my.id.zaxx.harvestflow.ui.home.HomeFragment.Companion.CHANNEL_ID
+import my.id.zaxx.harvestflow.ui.redirectnotif.RedirectNotifActivity
 
 class NotificationServices: Service() {
     private lateinit var firebase: FirebaseDatabase
@@ -43,8 +45,8 @@ class NotificationServices: Service() {
 //                startForegroundServiceWithNotification()
                 start()  // start your firebase listener & logic
             }
-
             Actions.STOP.toString() -> stopSelf()
+
         }
         return START_NOT_STICKY
     }
@@ -80,27 +82,6 @@ class NotificationServices: Service() {
         database.addValueEventListener(valueEventListener!!)
     }
 
-//    private fun getLuxSenor(){
-//        firebase = FirebaseDatabase.getInstance()
-//        database = firebase.getReference("light_sensor")
-//
-//        valueEventListener = object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                val luxValue = snapshot.getValue(LightSensor::class.java)
-//                luxValue?.let {
-//                    if (it.lux_value > 50000) {
-//                        sendNotification("Kontol", resources.getString(R.string.lorem_ipsum))
-//                    }
-//                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                Log.d("TAG", "onCancelled: $error")
-//            }
-//        }
-//        database.addValueEventListener(valueEventListener!!)
-//    }
-
     private fun getTempSensor() {
         firebase = FirebaseDatabase.getInstance()
         database = firebase.getReference("temp_sensor")
@@ -130,6 +111,7 @@ class NotificationServices: Service() {
     fun sendNotification(textContent : String){
         val intent = Intent(applicationContext, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("value", "redirect")
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(applicationContext,0,intent, PendingIntent.FLAG_IMMUTABLE)
 
@@ -144,6 +126,8 @@ class NotificationServices: Service() {
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = "Channel for background notifications"
+                enableVibration(true)
+                vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
             }
             val manager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(channel)
@@ -161,36 +145,34 @@ class NotificationServices: Service() {
                 .bigText(textContent))
             .build()
 
-        startForeground(2,builder)
+        startForeground(1,builder)
     }
 
-//    private fun startForegroundServiceWithNotification() {
-//        val channelId = "foreground_service_channel"
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val channel = NotificationChannel(~
-//                channelId,
-//                "Foreground Service Channel",
-//                NotificationManager.IMPORTANCE_LOW
-//            ).apply {
-//                description = "Foreground Service running"
-//            }
-//            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            manager.createNotificationChannel(channel)
-//        }
-//
-//        val notification = NotificationCompat.Builder(this, channelId)
-//            .setContentTitle("Monitoring Sensor")
-//            .setContentText("Sensor Monitoring Akitf")
-//            .setSmallIcon(R.drawable.ic_microchip)
-//            .setOngoing(true)
-//            .build()
-//
-//        // Promote service to foreground
-//        startForeground(2, notification)
-//    }
+    private fun startForegroundServiceWithNotification() {
+        val channelId = "foreground_service_channel"
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Foreground Service Channel",
+                NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                description = "Foreground Service running"
+            }
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+        }
 
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setContentTitle("Monitoring Sensor")
+            .setContentText("Sensor Monitoring Akitf")
+            .setSmallIcon(R.drawable.ic_microchip)
+            .setOngoing(true)
+            .build()
+
+        // Promote service to foreground
+        startForeground(1, notification)
+    }
 
 
     override fun onDestroy() {
