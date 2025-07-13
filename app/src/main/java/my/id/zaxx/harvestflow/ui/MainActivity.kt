@@ -22,14 +22,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         loadFragment(HomeFragment())
 
-        //Trigger Notification Services
-        Intent(this, NotificationServices::class.java).also{
-            it.action = NotificationServices.Actions.START.toString()
-            this.startService(it)
-        }
-
-
-
         binding.fab.setOnClickListener{
             val i = Intent(this@MainActivity, DetectionActivity::class.java)
             startActivity(i)
