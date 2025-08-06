@@ -17,7 +17,7 @@ import javax.inject.Singleton
 object ApiConfig {
 
     val baseURL = "https://api.openweathermap.org/"
-    val predictURL = "https://terrapin-relaxing-seemingly.ngrok-free.app/"
+    val predictURL = "https://app.potatohost.my.id/"
 
     @Provides
     @Singleton
