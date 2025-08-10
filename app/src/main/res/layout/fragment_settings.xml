@@ -72,7 +72,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/baseline_dark_mode_24"
+                        android:src="@drawable/baseline_light_mode_24"
                         app:tint="#84CE7E" />
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/theme_switch"
@@ -83,7 +83,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/baseline_light_mode_24"
+                        android:src="@drawable/baseline_dark_mode_24"
                         app:tint="#2C3E50"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -96,6 +96,8 @@
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="2dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintTop_toBottomOf="@id/cardThemes">
 
                 <LinearLayout
@@ -139,6 +141,8 @@
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="2dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintTop_toBottomOf="@id/tvAboutHeader">
 
                 <LinearLayout
