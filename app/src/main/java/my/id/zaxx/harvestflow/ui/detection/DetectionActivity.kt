@@ -1,6 +1,7 @@
 package my.id.zaxx.harvestflow.ui.detection
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,11 +16,17 @@ class DetectionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetectionBinding
     private lateinit var viewPagerAdapter : DetectionPagesAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViewPager()
+
+        binding.btnBack.setOnClickListener {
+            onBackPressed()
+            finish()
+        }
     }
 
     private fun setupViewPager(){
