@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import my.id.zaxx.harvestflow.data.api.response.PredictionResponse
 import my.id.zaxx.harvestflow.data.api.response.Probabilities
 import my.id.zaxx.harvestflow.data.repository.HarvestFlowRepository
-import my.id.zaxx.harvestflow.ui.detection.manulinputsensor.ManualInputViewModel
 import retrofit2.HttpException
 import javax.inject.Inject
 

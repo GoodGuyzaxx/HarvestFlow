@@ -2,14 +2,9 @@ package my.id.zaxx.harvestflow.ui.redirectnotif
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import my.id.zaxx.harvestflow.R
 import my.id.zaxx.harvestflow.databinding.ActivityRedirectNotifBinding
 import my.id.zaxx.harvestflow.ui.MainActivity
-import my.id.zaxx.harvestflow.ui.home.HomeFragment
 import my.id.zaxx.harvestflow.utils.NotificationServices
 
 class RedirectNotifActivity : AppCompatActivity() {

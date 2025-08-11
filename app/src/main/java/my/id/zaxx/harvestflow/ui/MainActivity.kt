@@ -12,7 +12,6 @@ import my.id.zaxx.harvestflow.databinding.ActivityMainBinding
 import my.id.zaxx.harvestflow.ui.detection.DetectionActivity
 import my.id.zaxx.harvestflow.ui.home.HomeFragment
 import my.id.zaxx.harvestflow.ui.settings.SettingsFragment
-import my.id.zaxx.harvestflow.utils.NotificationServices
 
 
 @AndroidEntryPoint

@@ -18,13 +18,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import my.id.zaxx.harvestflow.R
-import my.id.zaxx.harvestflow.data.api.ApiConfig
 import my.id.zaxx.harvestflow.data.model.SoilSensor
 import my.id.zaxx.harvestflow.data.model.TempSensor
 import my.id.zaxx.harvestflow.ui.MainActivity
-import my.id.zaxx.harvestflow.ui.home.HomeFragment
 import my.id.zaxx.harvestflow.ui.home.HomeFragment.Companion.CHANNEL_ID
-import my.id.zaxx.harvestflow.ui.redirectnotif.RedirectNotifActivity
 
 class NotificationServices: Service() {
     private lateinit var firebase: FirebaseDatabase
